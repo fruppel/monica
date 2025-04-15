@@ -33,6 +33,7 @@ use SocialiteProviders\Azure\AzureExtendSocialite;
 use SocialiteProviders\Facebook\FacebookExtendSocialite;
 use SocialiteProviders\GitHub\GitHubExtendSocialite;
 use SocialiteProviders\Google\GoogleExtendSocialite;
+use SocialiteProviders\Keycloak\KeycloakExtendSocialite;
 use SocialiteProviders\LinkedIn\LinkedInExtendSocialite;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 use Tests\TestResponseMacros;
@@ -80,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
         if (! Http::hasMacro('getDnsRecord')) {
             Http::macro('getDnsRecord', function (string $hostname, int $type): ?Collection {
                 try {
-                    if (($entries = \Safe\dns_get_record($hostname, $type)) !== null) {
+                    if (($entries = \Safe\dns_get_record($hostname, $type)) != null) {
                         return collect($entries);
                     }
                 } catch (\Safe\Exceptions\NetworkException) {
@@ -155,5 +156,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, GitHubExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, GoogleExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, LinkedInExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
     }
 }
